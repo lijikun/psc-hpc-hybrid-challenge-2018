@@ -1,0 +1,31 @@
+#!/bin/bash
+#SBATCH --nodes=4
+#SBATCH -p GPU
+#SBATCH --gres=gpu:p100:2
+#SBATCH --ntasks-per-node=32
+#SBATCH -t 10:00
+#SBATCH -A tr5fp7p
+
+echo $0
+echo "==== 2018 PSC Summer HPC Boot Camp ===="
+echo "Participant: Jikun Li <lijikun@gmail.com>"
+echo
+
+module swap pgi  pgi/17.5
+module swap mpi  mpi/pgi_openmpi
+
+source_name="laplace_mpi-grid_openacc_async.c"
+
+opt_flags="-acc -fastsse -O4 -tp=haswell -ta=tesla:cuda8.0"
+
+exe_name=${source_name/.c/_4x1x2x1.exec}
+parameter_flags="-DNODES=4 -DNODE_ROWS=4 -DPES_PER_NODE=2 -DPE_ROWS=2 -DACC_VECLEN=1024"
+
+mpicc ${source_name} -o ${exe_name} ${parameter_flags} ${opt_flags}
+
+mpirun_flags="-np 8 -map-by node"
+
+echo "Executable file: "${exe_name}
+echo 
+mpirun ${mpirun_flags} ${exe_name}
+
