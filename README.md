@@ -4,7 +4,7 @@ This is my winning submission for the Hybrid Challenge at [XSEDE HPC 2018 Summer
 
 `laplace_mpi-grid_openacc_async_margin.c` is the submitted program, modified from example C program by [John Urbanic](https://www.psc.edu/staff/urbanic), who taught the course. It solves the Laplace equation with Jacobi iteration, as explained at https://devblogs.nvidia.com/openacc-example-part-1/.
 
-`final-submission.job` is a Bash script with directives for the [Slurm](https://slurm.schedmd.com/) job scheduler. It is intended for four nodes, each with 2x NVIDIA P100 GPU.
+`final-submission.job` is a Bash script with directives for the [Slurm](https://slurm.schedmd.com/) job scheduler. It is intended for four nodes, each with 2x NVIDIA P100 GPU. The C code is written a way for easy manipulation by compiler flags, making it easy to use Bash variables and loops to test a wide variety of parameters.
 
 Requires [OpenMPI](https://www.open-mpi.org/), and optionally [OpenACC](https://www.openacc.org/).
 
